@@ -5,6 +5,7 @@ export default function App() {
   const soundCloseTimeoutRef = useRef(null);
   const lastVolumeRef = useRef(0.5);
 
+  const [reason, setReason] = useState("");
   const [isMuted, setIsMuted] = useState(true);
   const [brightness, setBrightness] = useState(0);
   const [volume, setVolume] = useState(0);
@@ -32,6 +33,7 @@ export default function App() {
     setPreviewUrl(URL.createObjectURL(file));
     setResult("");
     setConfidence("");
+    setReason("");
   };
 
   const handleSubmit = async () => {
@@ -44,6 +46,7 @@ export default function App() {
     formData.append("file", selectedFile);
 
     try {
+      setReason("");
       setLoading(true);
       setResult("");
       setConfidence("");
@@ -62,6 +65,7 @@ export default function App() {
 
       setResult(data.result);
       setConfidence(`${data.confidence}%`);
+      setReason(data.reason || "");
     } catch (error) {
       console.error(error);
       alert("Could not connect to Flask backend");
@@ -790,32 +794,49 @@ export default function App() {
           </button>
         )}
         {result && (
+  <div
+    style={{
+      textAlign: "center",
+      color: "#f8fafc",
+      background: "rgba(0,0,0,0.34)",
+      border: "1px solid rgba(255,255,255,0.14)",
+      borderRadius: "14px",
+      padding: "14px 16px",
+      width: "100%",
+      boxShadow: "0 8px 28px rgba(0,0,0,0.28)",
+    }}
+  >
+    <div style={{ fontSize: "1.05rem", fontWeight: 700 }}>
+      Result: {result}
+    </div>
+
+    <div
+      style={{
+        marginTop: "6px",
+        fontSize: "0.95rem",
+        color: "rgba(255,255,255,0.82)",
+      }}
+    >
+      Confidence: {confidence}
+    </div>
+
+        {reason && (
           <div
             style={{
-              textAlign: "center",
-              color: "#f8fafc",
-              background: "rgba(0,0,0,0.34)",
-              border: "1px solid rgba(255,255,255,0.14)",
-              borderRadius: "14px",
-              padding: "12px 16px",
-              width: "100%",
-              boxShadow: "0 8px 28px rgba(0,0,0,0.28)",
+              marginTop: "10px",
+              paddingTop: "10px",
+              borderTop: "1px solid rgba(255,255,255,0.10)",
+              fontSize: "0.9rem",
+              lineHeight: 1.55,
+              color: "rgba(255,255,255,0.74)",
+              textAlign: "left",
             }}
           >
-            <div style={{ fontSize: "1.05rem", fontWeight: 700 }}>
-              Result: {result}
-            </div>
-            <div
-              style={{
-                marginTop: "6px",
-                fontSize: "0.95rem",
-                color: "rgba(255,255,255,0.82)",
-              }}
-            >
-              Confidence: {confidence}
-            </div>
+            {reason}
           </div>
         )}
+      </div>
+    )}
         <input
           type="file"
           accept="image/*"
