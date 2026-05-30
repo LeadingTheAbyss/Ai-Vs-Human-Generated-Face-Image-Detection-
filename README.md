@@ -104,8 +104,3 @@ AI_Vs_Human_IMG_Detection/
 * Deploy full pipeline on cloud
 
 ---
-
-## Authors
-
-* Masochistic — https://github.com/leadingtheabyss
-* Witty_Walter_White — https://github.com/Witty-Walter
